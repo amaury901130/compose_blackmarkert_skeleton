@@ -8,9 +8,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.rs.blackmarket.ui.theme.BlackMarketTheme
+import com.rs.blackmarket.ui.viewmodels.AuthVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    Greeting()
                 }
             }
         }
@@ -32,14 +35,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    BlackMarketTheme {
-        Greeting("Android")
-    }
+fun Greeting(viewModel: AuthVM = hiltViewModel<AuthVM>().apply { loadTest() }) {
+    val isLoggedIn = viewModel.uiState.collectAsState()
+    Text(text = "$isLoggedIn")
 }

@@ -12,10 +12,10 @@ import retrofit2.http.POST
 
 interface AuthService {
     @POST("auth")
-    fun signUp(body: SignUpRequest) : Call<DataResponse<UserEntity>>
+    fun signUp(@Body body: SignUpRequest) : Call<DataResponse<UserEntity>>
 
     @POST("auth/sign_in")
-    fun signIn(body: SignInRequest) : Call<DataResponse<UserEntity>>
+    fun signIn(@Body body: SignInRequest) : Call<DataResponse<UserEntity>>
 
     @DELETE("auth/sign_out")
     fun signOut() : Call<DefaultResponse>
