@@ -4,9 +4,6 @@ import com.rs.data.DataPreferences
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
 
 class RequestInterceptor(private val pref: DataPreferences) : Interceptor {
 
@@ -20,7 +17,7 @@ class RequestInterceptor(private val pref: DataPreferences) : Interceptor {
             header("Accept", "application/json")
             header("access-token", pref.accessToken)
             header("token-type", pref.typeToken)
-            header("client", pref.clientToken)
+            header("client", pref.refreshToken)
             header("expiry", pref.expireToken)
             header("uid", pref.uidToken)
         }.build()
@@ -35,8 +32,8 @@ class ResponseInterceptor(private val pref: DataPreferences) : Interceptor {
             response = chain.proceed(request)
             if (response.isSuccessful) {
                 response.header("access-token")?.let { pref.accessToken = it }
-                response.header("token-type")?.let { pref.clientToken = it }
-                response.header("client")?.let { pref.clientToken = it }
+                response.header("token-type")?.let { pref.refreshToken = it }
+                response.header("client")?.let { pref.refreshToken = it }
                 response.header("expiry")?.let { pref.expireToken = it }
                 response.header("uid")?.let { pref.uidToken = it }
             }

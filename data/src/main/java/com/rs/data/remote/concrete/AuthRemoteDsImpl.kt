@@ -1,32 +1,29 @@
 package com.rs.data.remote.concrete
 
+import com.rs.data.DataPreferences
 import com.rs.data.entity.UserEntity
 import com.rs.data.model.Data
 import com.rs.data.remote.AuthRemoteDs
 import com.rs.data.requests.SignInData
-import com.rs.data.requests.SignInRequest
 import com.rs.data.requests.SignUpData
-import com.rs.data.requests.SignUpRequest
 import com.rs.data.services.AuthService
 import com.rs.data.wrapper.ApiWrapper
 
-class AuthRemoteDsImpl(private val authService: AuthService) : AuthRemoteDs {
+class AuthRemoteDsImpl(private val authService: AuthService, private val pref: DataPreferences) :
+    AuthRemoteDs {
     override suspend fun singUp(
         email: String,
-        name: String,
         password: String
-    ): Data<UserEntity> {
+    ): Data<String> {
         return when (
             val response = ApiWrapper.call(
                 authService.signUp(
-                    SignUpRequest(
-                        SignUpData(email, name, password)
-                    )
+                    SignUpData(email, password, password)
                 )
             )
         ) {
-            is Data.Success -> Data.Success(response.data?.value)
-            is Data.Error -> Data.Error(response.error)
+            is Data.Success -> Data.Success(response.data?.detail)
+            is Data.Error -> Data.Error(response.error, response.errorMessages)
         }
     }
 
@@ -34,21 +31,26 @@ class AuthRemoteDsImpl(private val authService: AuthService) : AuthRemoteDs {
         return when (
             val response = ApiWrapper.call(
                 authService.signIn(
-                    SignInRequest(
-                        SignInData(email, password)
-                    )
+                    SignInData(email, password)
                 )
             )
         ) {
-            is Data.Success -> Data.Success(response.data?.value)
-            is Data.Error -> Data.Error(response.error)
+            is Data.Success -> {
+                response.data?.run {
+                    pref.accessToken = accessToken
+                    pref.refreshToken = refreshToken
+                    return Data.Success(user)
+                }
+                return Data.Error()
+            }
+            is Data.Error -> Data.Error(response.error, response.errorMessages)
         }
     }
 
     override suspend fun logOut(): Data<Boolean> {
         return when (val response = ApiWrapper.call(authService.signOut())) {
             is Data.Success -> Data.Success(true)
-            is Data.Error -> Data.Error(response.error)
+            is Data.Error -> Data.Error(response.error, response.errorMessages)
         }
     }
 }

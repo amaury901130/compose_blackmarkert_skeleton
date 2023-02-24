@@ -1,8 +1,10 @@
 package com.rs.blackmarket.domain.repository
 
+import com.rs.blackmarket.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 
 interface AuthRepository {
-    fun createAccount(email: String, name: String, password: String): Flow<Boolean>
+    fun singUp(email: String, password: String): Flow<Resource<Boolean>>
+    fun signIn(email: String, password: String): Flow<Resource<Boolean>>
 }

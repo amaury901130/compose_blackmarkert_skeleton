@@ -103,8 +103,8 @@ class DataProviderModule {
 
     @Singleton
     @Provides
-    fun provideAuthDataSource(authService: AuthService): AuthRemoteDs {
-        return AuthRemoteDsImpl(authService)
+    fun provideAuthDataSource(authService: AuthService, pref: DataPreferences): AuthRemoteDs {
+        return AuthRemoteDsImpl(authService, pref)
     }
 
     @Singleton

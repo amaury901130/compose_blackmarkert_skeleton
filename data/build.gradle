@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_URL", "\"https://blackmarket-api.herokuapp.com/api/v1/\"")
+        buildConfigField("String", "API_URL", "\"https://black-market-juan-rs.herokuapp.com/\"")
         buildConfigField("String", "PREF_KEY", "\"com.rs.data.pref\"")
     }
 

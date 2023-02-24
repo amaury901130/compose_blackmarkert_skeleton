@@ -26,9 +26,9 @@ class DataPreferences(val prefs: SharedPreferences) {
         get() = getString(UUID)
         set(value) = setString(UUID, value)
 
-    var clientToken: String
-        get() = getString(CLIENT)
-        set(value) = setString(CLIENT, value)
+    var refreshToken: String
+        get() = getString(REFRESH_TOKEN)
+        set(value) = setString(REFRESH_TOKEN, value)
 
     var expireToken: String
         get() = getString(EXPIRE)
@@ -45,7 +45,7 @@ class DataPreferences(val prefs: SharedPreferences) {
     companion object {
         const val ACCESS_TOKEN = "access_token"
         const val TOKEN_TYPE = "token_type"
-        const val CLIENT = "client"
+        const val REFRESH_TOKEN = "refresh_token"
         const val UUID = "uid"
         const val EXPIRE = "expire"
         const val EMPTY = ""

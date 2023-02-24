@@ -11,8 +11,8 @@ data class SignUpRequest(
 data class SignUpData(
     @SerializedName("email")
     val email: String,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("password")
-    val password: String
+    @SerializedName("password1")
+    val password1: String,
+    @SerializedName("password2")
+    val password2: String
 )
