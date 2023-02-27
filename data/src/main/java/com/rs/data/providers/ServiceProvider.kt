@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.rs.data.BuildConfig
 import com.rs.data.DataPreferences
-import com.rs.data.api.concrete.ApiConnection
+import com.rs.data.api.ApiConnection
 import com.rs.data.interceptors.NetworkErrorInterceptorStrategy
 import com.rs.data.interceptors.RequestInterceptor
 import com.rs.data.remote.AuthRemoteDs
@@ -16,8 +16,9 @@ import com.rs.data.remote.concrete.ProductsRemoteDsImpl
 import com.rs.data.services.ProfileService
 import com.rs.data.services.ProductsService
 import com.rs.data.services.CartService
-import com.rs.data.api.ApiConnectionImpl
+import com.rs.data.api.concrete.ApiConnectionImpl
 import com.rs.data.services.TokenService
+import com.rs.data.services.UserServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -99,6 +100,12 @@ class DataProviderModule {
     @Singleton
     fun provideProfileService(retrofit: Retrofit): CartService {
         return retrofit.create(CartService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUsersService(retrofit: Retrofit): UserServices {
+        return retrofit.create(UserServices::class.java)
     }
 
     @Provides

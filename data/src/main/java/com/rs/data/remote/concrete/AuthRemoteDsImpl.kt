@@ -8,8 +8,7 @@ import com.rs.data.requests.LogoutRequest
 import com.rs.data.requests.SignInData
 import com.rs.data.requests.SignUpData
 import com.rs.data.services.ProfileService
-import com.rs.data.api.ApiConnectionImpl
-import com.rs.data.api.concrete.ApiConnection
+import com.rs.data.api.ApiConnection
 
 class AuthRemoteDsImpl(
     private val authService: ProfileService,
@@ -70,14 +69,15 @@ class AuthRemoteDsImpl(
     }
 
     override suspend fun refreshToken(): Data<Boolean> {
-        val refreshToken = pref.refreshToken
-        pref.clean()
         return when (val response = api.call(
             authService.refreshToken(
-                LogoutRequest(refreshToken)
+                LogoutRequest(pref.refreshToken)
             )
         )) {
-            is Data.Success -> Data.Success(true)
+            is Data.Success -> {
+                pref.refreshToken = response.data?.token ?: ""
+                Data.Success(true)
+            }
             is Data.Error -> Data.Error(response.error, response.errorMessages)
         }
     }

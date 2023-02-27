@@ -7,6 +7,7 @@ import com.rs.data.requests.SignUpData
 import com.rs.data.requests.UpdateUserRequest
 import com.rs.data.responses.DefaultResponse
 import com.rs.data.responses.SignInResponse
+import com.rs.data.responses.TokenRefreshResponse
 import com.rs.data.responses.TokenResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -25,7 +26,7 @@ interface ProfileService {
     fun getAuthToken(@Body body: SignInData): Call<TokenResponse>
 
     @POST("/token/refresh")
-    fun refreshToken(@Body body: LogoutRequest): Call<TokenResponse>
+    fun refreshToken(@Body body: LogoutRequest): Call<TokenRefreshResponse>
 
     @POST("${AUTH_BASE}/logout/")
     fun signOut(@Body body: LogoutRequest): Call<DefaultResponse>
