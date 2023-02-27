@@ -8,16 +8,21 @@ import com.rs.data.requests.LogoutRequest
 import com.rs.data.requests.SignInData
 import com.rs.data.requests.SignUpData
 import com.rs.data.services.ProfileService
-import com.rs.data.wrapper.ApiWrapper
+import com.rs.data.api.ApiConnectionImpl
+import com.rs.data.api.concrete.ApiConnection
 
-class AuthRemoteDsImpl(private val authService: ProfileService, private val pref: DataPreferences) :
+class AuthRemoteDsImpl(
+    private val authService: ProfileService,
+    private val pref: DataPreferences,
+    private val api: ApiConnection
+) :
     AuthRemoteDs {
     override suspend fun singUp(
         email: String,
         password: String
     ): Data<String> {
         return when (
-            val response = ApiWrapper.call(
+            val response = api.call(
                 authService.signUp(
                     SignUpData(email, password, password)
                 )
@@ -33,7 +38,7 @@ class AuthRemoteDsImpl(private val authService: ProfileService, private val pref
 
     override suspend fun singIn(email: String, password: String): Data<UserEntity> {
         return when (
-            val response = ApiWrapper.call(
+            val response = api.call(
                 authService.signIn(
                     SignInData(email, password)
                 )
@@ -51,22 +56,27 @@ class AuthRemoteDsImpl(private val authService: ProfileService, private val pref
         }
     }
 
-    suspend fun loadToken(email: String, password: String) {
-        val response = ApiWrapper.call(
-            authService.getAuthToken(
-                SignInData(email, password)
-            )
-        )
-        if (response is Data.Success)
-            pref.accessToken = response.data?.token ?: ""
-    }
-
     override suspend fun logOut(): Data<Boolean> {
         val refreshToken = pref.refreshToken
         pref.clean()
-        return when (val response = ApiWrapper.call(authService.signOut(
-            LogoutRequest(refreshToken)
-        ))) {
+        return when (val response = api.call(
+            authService.signOut(
+                LogoutRequest(refreshToken)
+            )
+        )) {
+            is Data.Success -> Data.Success(true)
+            is Data.Error -> Data.Error(response.error, response.errorMessages)
+        }
+    }
+
+    override suspend fun refreshToken(): Data<Boolean> {
+        val refreshToken = pref.refreshToken
+        pref.clean()
+        return when (val response = api.call(
+            authService.refreshToken(
+                LogoutRequest(refreshToken)
+            )
+        )) {
             is Data.Success -> Data.Success(true)
             is Data.Error -> Data.Error(response.error, response.errorMessages)
         }

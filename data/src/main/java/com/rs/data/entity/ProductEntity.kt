@@ -35,7 +35,9 @@ data class ProductEntity(
     @SerializedName("num_available_items")
     val numAvailableItems: Int = 0,
     @SerializedName("product_pictures")
-    val productPictures: List<String> = emptyList(),
+    val productPictures: List<String>? = emptyList(),
+    @SerializedName("product_picture")
+    val productPicture: String? = null,
     @SerializedName("state")
     val state: String? = null,
     @SerializedName("unit_price")

@@ -11,4 +11,5 @@ interface AuthRemoteDs {
 
     suspend fun singIn(email: String, password: String): Data<UserEntity>
     suspend fun logOut(): Data<Boolean>
+    suspend fun refreshToken(): Data<Boolean>
 }

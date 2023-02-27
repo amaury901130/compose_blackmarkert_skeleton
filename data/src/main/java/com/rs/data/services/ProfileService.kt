@@ -21,11 +21,11 @@ interface ProfileService {
     @POST("${AUTH_BASE}/login/")
     fun signIn(@Body body: SignInData): Call<SignInResponse>
 
-    @POST("${AUTH_BASE}/login/")
-    fun confirmToken(@Body body: SignInData): Call<SignInResponse>
-
     @POST("/auth-token/")
     fun getAuthToken(@Body body: SignInData): Call<TokenResponse>
+
+    @POST("/token/refresh")
+    fun refreshToken(@Body body: LogoutRequest): Call<TokenResponse>
 
     @POST("${AUTH_BASE}/logout/")
     fun signOut(@Body body: LogoutRequest): Call<DefaultResponse>

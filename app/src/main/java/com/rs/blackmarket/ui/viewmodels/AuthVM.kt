@@ -25,6 +25,14 @@ class AuthVM @Inject constructor(private val authRepository: AuthRepository) : V
         }
     }
 
+    fun singUp(email: String, password: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.singUp(email, password).collect {
+                _uiState.emit(it)
+            }
+        }
+    }
+
     fun logOut() {
         viewModelScope.launch(Dispatchers.IO) {
             authRepository.logOut().collect {
