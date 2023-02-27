@@ -10,7 +10,7 @@ import com.rs.data.requests.SignUpData
 import com.rs.data.services.ProfileService
 import com.rs.data.api.ApiConnection
 
-class AuthRemoteDsImpl(
+internal class AuthRemoteDsImpl(
     private val authService: ProfileService,
     private val pref: DataPreferences,
     private val api: ApiConnection

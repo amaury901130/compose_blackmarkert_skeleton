@@ -14,7 +14,7 @@ import retrofit2.Call
 import java.lang.reflect.Type
 
 
-class ApiConnectionImpl(
+internal class ApiConnectionImpl(
     private val tokenService: TokenService,
     private val pref: DataPreferences
 ) : ApiConnection {
