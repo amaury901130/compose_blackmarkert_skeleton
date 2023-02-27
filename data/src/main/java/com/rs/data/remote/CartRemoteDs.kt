@@ -8,12 +8,4 @@ import com.rs.data.model.Data
 
 interface CartRemoteDs {
 
-    suspend fun getCart(): Data<List<ProductEntity>>
-
-    suspend fun addProductToCart(productId: Int, quantity: Int): Data<ProductEntity>
-
-    suspend fun purchaseCard(
-        paymentData: PaymentDataEntity,
-        shippingData: ShippingDataEntity
-    ): Data<InvoiceEntity>
 }

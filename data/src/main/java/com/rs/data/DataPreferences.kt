@@ -42,6 +42,10 @@ class DataPreferences(val prefs: SharedPreferences) {
         prefs.edit().putString(key, value).apply()
     }
 
+    fun clean() {
+        prefs.edit().clear().apply()
+    }
+
     companion object {
         const val ACCESS_TOKEN = "access_token"
         const val TOKEN_TYPE = "token_type"

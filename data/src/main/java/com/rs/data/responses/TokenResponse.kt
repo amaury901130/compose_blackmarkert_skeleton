@@ -2,7 +2,8 @@ package com.rs.data.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class SignUpResponse(
-    @SerializedName("detail")
-    val detail: String
+
+data class TokenResponse(
+    @SerializedName("token")
+    val token: String
 )

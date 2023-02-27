@@ -34,4 +34,10 @@ class AuthRepositoryImpl(private val authRemoteDs: AuthRemoteDs) : AuthRepositor
         else
             emit(Resource.Success(true))
     }
+
+    override fun logOut(): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading())
+        authRemoteDs.logOut()
+        emit(Resource.Success(true))
+    }
 }

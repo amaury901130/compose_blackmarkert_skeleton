@@ -17,9 +17,17 @@ class AuthVM @Inject constructor(private val authRepository: AuthRepository) : V
 
     private val _uiState = MutableStateFlow<Resource<Boolean>>(Resource.Idle())
     val uiState = _uiState.asStateFlow()
-    fun loadTest() {
+    fun singIn(email: String = "amaury@rootstrap.com", password: String = "P@ssword123") {
         viewModelScope.launch(Dispatchers.IO) {
-            authRepository.signIn("amaury@rootstrap.com", "P@ssword123").collect {
+            authRepository.signIn(email, password).collect {
+                _uiState.emit(it)
+            }
+        }
+    }
+
+    fun logOut() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.logOut().collect {
                 _uiState.emit(it)
             }
         }

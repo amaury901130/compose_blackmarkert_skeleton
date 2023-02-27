@@ -13,37 +13,13 @@ class RequestInterceptor(private val pref: DataPreferences) : Interceptor {
     }
 
     private fun addDefaultHeaders(request: Request): Request {
-        return request.newBuilder().run {
-            header("Accept", "application/json")
-            header("access-token", pref.accessToken)
-            header("token-type", pref.typeToken)
-            header("client", pref.refreshToken)
-            header("expiry", pref.expireToken)
-            header("uid", pref.uidToken)
-        }.build()
-    }
-}
-
-class ResponseInterceptor(private val pref: DataPreferences) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val response: Response
-        try {
-            response = chain.proceed(request)
-            if (response.isSuccessful) {
-                response.header("access-token")?.let { pref.accessToken = it }
-                response.header("token-type")?.let { pref.refreshToken = it }
-                response.header("client")?.let { pref.refreshToken = it }
-                response.header("expiry")?.let { pref.expireToken = it }
-                response.header("uid")?.let { pref.uidToken = it }
-            }
-        } catch (exception: Exception) {
-            throw exception
+        val builder = request.newBuilder()
+        builder.addHeader("Accept", "application/json")
+        pref.accessToken.takeIf { it.isNotEmpty() }?.let {
+            builder.addHeader("Authorization", "Bearer $it")
         }
-        return response
+        return builder.build()
     }
-
-
 }
 
 class NetworkErrorInterceptorStrategy : Interceptor {

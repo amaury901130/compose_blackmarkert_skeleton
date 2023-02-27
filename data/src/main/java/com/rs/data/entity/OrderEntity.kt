@@ -1,9 +1,9 @@
-package com.rs.data.responses
+package com.rs.data.entity
 
 
 import com.google.gson.annotations.SerializedName
 
-data class PurchaseResponse(
+data class OrderEntity(
     @SerializedName("address_city")
     val addressCity: String,
     @SerializedName("address_country")

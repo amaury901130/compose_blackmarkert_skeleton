@@ -4,12 +4,13 @@ import com.rs.data.DataPreferences
 import com.rs.data.entity.UserEntity
 import com.rs.data.model.Data
 import com.rs.data.remote.AuthRemoteDs
+import com.rs.data.requests.LogoutRequest
 import com.rs.data.requests.SignInData
 import com.rs.data.requests.SignUpData
-import com.rs.data.services.AuthService
+import com.rs.data.services.ProfileService
 import com.rs.data.wrapper.ApiWrapper
 
-class AuthRemoteDsImpl(private val authService: AuthService, private val pref: DataPreferences) :
+class AuthRemoteDsImpl(private val authService: ProfileService, private val pref: DataPreferences) :
     AuthRemoteDs {
     override suspend fun singUp(
         email: String,
@@ -22,7 +23,10 @@ class AuthRemoteDsImpl(private val authService: AuthService, private val pref: D
                 )
             )
         ) {
-            is Data.Success -> Data.Success(response.data?.detail)
+            is Data.Success -> {
+                singIn(email, password)
+                Data.Success(response.data?.detail)
+            }
             is Data.Error -> Data.Error(response.error, response.errorMessages)
         }
     }
@@ -47,8 +51,22 @@ class AuthRemoteDsImpl(private val authService: AuthService, private val pref: D
         }
     }
 
+    suspend fun loadToken(email: String, password: String) {
+        val response = ApiWrapper.call(
+            authService.getAuthToken(
+                SignInData(email, password)
+            )
+        )
+        if (response is Data.Success)
+            pref.accessToken = response.data?.token ?: ""
+    }
+
     override suspend fun logOut(): Data<Boolean> {
-        return when (val response = ApiWrapper.call(authService.signOut())) {
+        val refreshToken = pref.refreshToken
+        pref.clean()
+        return when (val response = ApiWrapper.call(authService.signOut(
+            LogoutRequest(refreshToken)
+        ))) {
             is Data.Success -> Data.Success(true)
             is Data.Error -> Data.Error(response.error, response.errorMessages)
         }

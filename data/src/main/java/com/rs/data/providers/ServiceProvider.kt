@@ -6,14 +6,13 @@ import com.rs.data.BuildConfig
 import com.rs.data.DataPreferences
 import com.rs.data.interceptors.NetworkErrorInterceptorStrategy
 import com.rs.data.interceptors.RequestInterceptor
-import com.rs.data.interceptors.ResponseInterceptor
 import com.rs.data.remote.AuthRemoteDs
 import com.rs.data.remote.CartRemoteDs
 import com.rs.data.remote.ProductsRemoteDs
 import com.rs.data.remote.concrete.AuthRemoteDsImpl
 import com.rs.data.remote.concrete.CartRemoteDsImpl
 import com.rs.data.remote.concrete.ProductsRemoteDsImpl
-import com.rs.data.services.AuthService
+import com.rs.data.services.ProfileService
 import com.rs.data.services.ProductsService
 import com.rs.data.services.CartService
 import dagger.Module
@@ -44,28 +43,21 @@ class DataProviderModule {
 
     @Provides
     @Singleton
-    fun provideResponseInterceptor(prefs: DataPreferences): ResponseInterceptor =
-        ResponseInterceptor(prefs)
-
-    @Provides
-    @Singleton
     fun provideRequestInterceptor(prefs: DataPreferences): RequestInterceptor =
         RequestInterceptor(prefs)
 
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        responseInterceptor: ResponseInterceptor,
         requestInterceptor: RequestInterceptor
     ): OkHttpClient {
         val httpInterceptorLevel =
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
 
         return OkHttpClient.Builder()
+            .addInterceptor(requestInterceptor)
             .addInterceptor(NetworkErrorInterceptorStrategy())
             .addInterceptor(HttpLoggingInterceptor().setLevel(httpInterceptorLevel))
-            .addInterceptor(requestInterceptor)
-            .addInterceptor(responseInterceptor)
             .build()
     }
 
@@ -80,8 +72,8 @@ class DataProviderModule {
     }
 
     @Provides
-    fun provideAuthService(retrofit: Retrofit): AuthService {
-        return retrofit.create(AuthService::class.java)
+    fun provideAuthService(retrofit: Retrofit): ProfileService {
+        return retrofit.create(ProfileService::class.java)
     }
 
     @Provides
@@ -103,7 +95,7 @@ class DataProviderModule {
 
     @Singleton
     @Provides
-    fun provideAuthDataSource(authService: AuthService, pref: DataPreferences): AuthRemoteDs {
+    fun provideAuthDataSource(authService: ProfileService, pref: DataPreferences): AuthRemoteDs {
         return AuthRemoteDsImpl(authService, pref)
     }
 

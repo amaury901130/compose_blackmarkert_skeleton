@@ -40,9 +40,11 @@ fun Greeting(viewModel: AuthVM = hiltViewModel()) {
     val signUpState = viewModel.uiState.collectAsState()
     when (val currentState = signUpState.value) {
         is Resource.Loading -> Text(text = "Loading")
-        is Resource.Error -> Text(text = currentState.message ?: "SignUp Error")
-        is Resource.Success -> Text(text = "Success")
-        is Resource.Idle -> Button(onClick = { viewModel.loadTest() }) {
+        is Resource.Error -> Text(text = currentState.message ?: "Error")
+        is Resource.Success -> Button(onClick = { viewModel.logOut() }) {
+            Text(text = "Log Out")
+        }
+        is Resource.Idle -> Button(onClick = { viewModel.singIn() }) {
             Text(text = "Login")
         }
     }
