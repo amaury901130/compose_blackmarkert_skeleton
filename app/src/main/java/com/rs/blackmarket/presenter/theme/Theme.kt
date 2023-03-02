@@ -1,4 +1,4 @@
-package com.rs.blackmarket.ui.theme
+package com.rs.blackmarket.presenter.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

@@ -126,7 +126,7 @@ class DataProviderModule {
 
     @Provides
     @Singleton
-    fun provideProdDataSource(productsService: ProductsService): ProductsRemoteDs {
-        return ProductsRemoteDsImpl(productsService)
+    fun provideProdDataSource(productsService: ProductsService, api: ApiConnection): ProductsRemoteDs {
+        return ProductsRemoteDsImpl(productsService, api)
     }
 }

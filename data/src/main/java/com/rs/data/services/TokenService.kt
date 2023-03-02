@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface TokenService {
-    @POST("/token/refresh")
+    @POST("/dj-rest-auth/token/refresh/")
     fun refreshToken(@Body body: LogoutRequest): Call<TokenRefreshResponse>
 }

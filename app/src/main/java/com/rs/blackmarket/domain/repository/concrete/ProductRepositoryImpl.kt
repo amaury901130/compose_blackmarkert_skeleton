@@ -1,22 +1,73 @@
 package com.rs.blackmarket.domain.repository.concrete
 
+import com.rs.blackmarket.domain.extensions.parse
 import com.rs.blackmarket.domain.model.Category
+import com.rs.blackmarket.domain.model.Product
+import com.rs.blackmarket.domain.model.ProductStatus
 import com.rs.blackmarket.domain.model.Resource
 import com.rs.blackmarket.domain.repository.ProductRepository
+import com.rs.data.model.Data
 import com.rs.data.remote.ProductsRemoteDs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
 class ProductRepositoryImpl(private val productsDS: ProductsRemoteDs) : ProductRepository {
-    override fun getCategories(): Flow<Resource<List<Category>>> = flow {
+    override fun getCategories(page: Int): Flow<Resource<List<Category>>> = flow {
         emit(Resource.Loading())
-        //TODO:..
+        val result = when (val categories = productsDS.getCategories(page)) {
+            is Data.Success -> Resource.Success(
+                categories.data?.map { Category.parse(it) }
+            )
+            is Data.Error -> Resource.Error(categories.errorMessages?.values?.first()?.toString())
+        }
+        emit(result)
     }
 
-    override fun getCategoryById(): Flow<Resource<Category>> = flow {
+    override fun getCategoryById(categoryId: Int): Flow<Resource<Category>> = flow {
         emit(Resource.Loading())
-        //TODO:..
+        val result = when (val categories = productsDS.getCategoryById(categoryId)) {
+            is Data.Success -> Resource.Success(
+                categories.data?.let { Category.parse(it) }
+            )
+            is Data.Error -> Resource.Error(categories.errorMessages?.values?.first()?.toString())
+        }
+        emit(result)
+    }
+
+    override fun getProductById(): Flow<Resource<Product>> = flow {
+        emit(Resource.Loading())
+    }
+
+    override fun getProductsByCategory(categoryName: String, page: Int): Flow<Resource<List<Product>>> = flow {
+        emit(Resource.Loading())
+        val response = when (
+            val products = productsDS.getProductsByCategory(categoryName, page)
+        ) {
+            is Data.Success -> Resource.Success(products.data?.map { Product.parse(it) })
+            is Data.Error -> Resource.Error(products.errorMessages?.values?.toString())
+        }
+
+        emit(response)
+    }
+
+    override fun findProduct(
+        page: Int,
+        categories: List<String>?,
+        status: ProductStatus,
+        query: String?,
+        minPrice: Double?,
+        maxPrice: Double?
+    ): Flow<Resource<List<Product>>> = flow {
+        emit(Resource.Loading())
+        val response = when (
+            val products = productsDS.getProductsByCategory("",1)
+        ) {
+            is Data.Success -> Resource.Success(products.data?.map { Product.parse(it) })
+            is Data.Error -> Resource.Error(products.errorMessages?.values?.first() as String)
+        }
+
+        emit(response)
     }
 
 }

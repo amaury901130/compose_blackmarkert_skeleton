@@ -23,7 +23,9 @@ internal class ApiConnectionImpl(
             val response = apiCall.execute()
             when {
                 response.isSuccessful -> return@withContext Data.Success(response.body())
-                response.code() == TOKEN_EXPIRED_CODE -> return@withContext reloadToken(apiCall.clone())
+                response.code() == FORBIDDEN_ERROR || response.code() == UNAUTHORIZED_ERROR -> return@withContext reloadToken(
+                    apiCall.clone()
+                )
                 else -> {
                     val type: Type = object : TypeToken<HashMap<String, Any>>() {}.type
                     val errorMessage: HashMap<String, Any> =
@@ -64,6 +66,7 @@ internal class ApiConnectionImpl(
     }
 
     companion object {
-        const val TOKEN_EXPIRED_CODE = 401
+        const val FORBIDDEN_ERROR = 403
+        const val UNAUTHORIZED_ERROR = 401
     }
 }

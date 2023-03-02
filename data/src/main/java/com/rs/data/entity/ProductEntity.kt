@@ -23,7 +23,7 @@ data class OrderProductEntity(
 
 data class ProductEntity(
     @SerializedName("categories")
-    val categories: List<Category> = emptyList(),
+    val categories: List<CategoryEntity> = emptyList(),
     @SerializedName("description")
     val description: String = "",
     @SerializedName("id")

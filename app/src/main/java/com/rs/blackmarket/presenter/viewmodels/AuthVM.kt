@@ -1,4 +1,4 @@
-package com.rs.blackmarket.ui.viewmodels
+package com.rs.blackmarket.presenter.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

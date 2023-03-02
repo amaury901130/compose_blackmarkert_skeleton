@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderProduct(
     @SerializedName("product")
-    val product: Product,
+    val product: ProductEntity,
     @SerializedName("quantity")
     val quantity: Int,
     @SerializedName("total_product_price")

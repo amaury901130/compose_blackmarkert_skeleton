@@ -1,4 +1,4 @@
-package com.rs.blackmarket.ui.theme
+package com.rs.blackmarket.presenter.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
