@@ -1,7 +1,7 @@
 package com.rs.data.services
 
-import com.rs.data.requests.LogoutRequest
-import com.rs.data.responses.TokenRefreshResponse
+import com.rs.data.model.requests.LogoutRequest
+import com.rs.data.model.responses.TokenRefreshResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

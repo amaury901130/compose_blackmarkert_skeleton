@@ -1,8 +1,8 @@
 package com.rs.data.remote.concrete
 
 import com.rs.data.api.ApiConnection
-import com.rs.data.entity.CategoryEntity
-import com.rs.data.entity.ProductEntity
+import com.rs.data.model.entity.CategoryEntity
+import com.rs.data.model.entity.ProductEntity
 import com.rs.data.model.Data
 import com.rs.data.remote.ProductsRemoteDs
 import com.rs.data.services.ProductsService
@@ -30,6 +30,8 @@ internal class ProductsRemoteDsImpl(
         categoryName: String,
         page: Int
     ): Data<List<ProductEntity>> = findProducts(page, listOf(categoryName))
+
+    override suspend fun getProducts(page: Int): Data<List<ProductEntity>> = findProducts(page)
 
     override suspend fun findProducts(
         page: Int,

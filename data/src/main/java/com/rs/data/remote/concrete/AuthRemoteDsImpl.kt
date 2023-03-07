@@ -1,12 +1,12 @@
 package com.rs.data.remote.concrete
 
 import com.rs.data.DataPreferences
-import com.rs.data.entity.UserEntity
+import com.rs.data.model.entity.UserEntity
 import com.rs.data.model.Data
 import com.rs.data.remote.AuthRemoteDs
-import com.rs.data.requests.LogoutRequest
-import com.rs.data.requests.SignInData
-import com.rs.data.requests.SignUpData
+import com.rs.data.model.requests.LogoutRequest
+import com.rs.data.model.requests.SignInData
+import com.rs.data.model.requests.SignUpData
 import com.rs.data.services.ProfileService
 import com.rs.data.api.ApiConnection
 

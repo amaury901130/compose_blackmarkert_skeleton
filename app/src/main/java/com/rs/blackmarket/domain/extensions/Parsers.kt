@@ -3,8 +3,8 @@ package com.rs.blackmarket.domain.extensions
 import com.rs.blackmarket.domain.model.Category
 import com.rs.blackmarket.domain.model.Product
 import com.rs.blackmarket.domain.model.ProductStatus
-import com.rs.data.entity.CategoryEntity
-import com.rs.data.entity.ProductEntity
+import com.rs.data.model.entity.CategoryEntity
+import com.rs.data.model.entity.ProductEntity
 
 fun Category.Companion.parse(entity: CategoryEntity): Category = Category(
     id = entity.id,

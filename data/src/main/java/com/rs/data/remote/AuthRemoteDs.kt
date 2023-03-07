@@ -1,7 +1,7 @@
 package com.rs.data.remote
 
 import com.rs.data.model.Data
-import com.rs.data.entity.UserEntity
+import com.rs.data.model.entity.UserEntity
 
 interface AuthRemoteDs {
     suspend fun singUp(

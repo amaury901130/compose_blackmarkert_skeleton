@@ -1,14 +1,14 @@
 package com.rs.data.services
 
-import com.rs.data.entity.UserEntity
-import com.rs.data.requests.LogoutRequest
-import com.rs.data.requests.SignInData
-import com.rs.data.requests.SignUpData
-import com.rs.data.requests.UpdateUserRequest
-import com.rs.data.responses.DefaultResponse
-import com.rs.data.responses.SignInResponse
-import com.rs.data.responses.TokenRefreshResponse
-import com.rs.data.responses.TokenResponse
+import com.rs.data.model.entity.UserEntity
+import com.rs.data.model.requests.LogoutRequest
+import com.rs.data.model.requests.SignInData
+import com.rs.data.model.requests.SignUpData
+import com.rs.data.model.requests.UpdateUserRequest
+import com.rs.data.model.responses.DefaultResponse
+import com.rs.data.model.responses.SignInResponse
+import com.rs.data.model.responses.TokenRefreshResponse
+import com.rs.data.model.responses.TokenResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

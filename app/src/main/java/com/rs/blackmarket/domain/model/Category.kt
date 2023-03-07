@@ -1,6 +1,6 @@
 package com.rs.blackmarket.domain.model
 
-import com.rs.data.entity.CategoryEntity
+import com.rs.data.model.entity.CategoryEntity
 
 data class Category(
     val id: Int,

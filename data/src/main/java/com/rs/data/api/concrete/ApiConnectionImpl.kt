@@ -6,7 +6,7 @@ import com.rs.data.DataPreferences
 import com.rs.data.api.ApiConnection
 import com.rs.data.model.Data
 import com.rs.data.model.ResponseError
-import com.rs.data.requests.LogoutRequest
+import com.rs.data.model.requests.LogoutRequest
 import com.rs.data.services.TokenService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

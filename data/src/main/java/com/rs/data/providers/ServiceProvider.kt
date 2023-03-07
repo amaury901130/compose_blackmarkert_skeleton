@@ -110,8 +110,8 @@ class DataProviderModule {
 
     @Provides
     @Singleton
-    fun provideCartDataSource(cartService: CartService): CartRemoteDs {
-        return CartRemoteDsImpl(cartService)
+    fun provideCartDataSource(cartService: CartService, api: ApiConnection): CartRemoteDs {
+        return CartRemoteDsImpl(cartService, api)
     }
 
     @Provides

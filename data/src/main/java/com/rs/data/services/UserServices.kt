@@ -1,7 +1,7 @@
 package com.rs.data.services
 
-import com.rs.data.entity.UserEntity
-import com.rs.data.responses.DefaultListResponse
+import com.rs.data.model.entity.UserEntity
+import com.rs.data.model.responses.DefaultListResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
