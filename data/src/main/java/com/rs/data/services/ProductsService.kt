@@ -32,16 +32,9 @@ interface ProductsService {
     @GET("api/products/")
     fun getProducts(@QueryMap query: Map<String, String>): Call<DefaultListResponse<ProductEntity>>
 
-    @GET("api/products/")
-    fun getProductsByCategory(
-        @Query("categories") category: String,
-        @Query("page") page: Int,
-        @Query("page_size") pageSize: Int
-    ): Call<DefaultListResponse<ProductEntity>>
-
-    @GET("api/products/favorites/?page={page}&page_size={page_size}{query}")
+    @GET("api/products/favorites/?page={page}&page_size={page_size}")
     fun getFavorites(
-        @Query("page") page: Int, @Query("page_size") pageSize: Int, @Query("query") query: String
+        @Query("page") page: Int, @Query("page_size") pageSize: Int
     ): Call<DefaultListResponse<ProductEntity>>
 
     @GET("api/products/{id}/")

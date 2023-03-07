@@ -17,7 +17,7 @@ data class OrderEntity(
     @SerializedName("card_last4")
     val cardLast4: String,
     @SerializedName("date_bought")
-    val dateBought: String,
+    val dateBought: String? = null,
     @SerializedName("id")
     val id: Int,
     @SerializedName("is_shopping_cart")

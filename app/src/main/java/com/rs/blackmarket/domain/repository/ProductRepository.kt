@@ -9,6 +9,12 @@ import kotlinx.coroutines.flow.Flow
 interface ProductRepository {
     fun getCategories(page: Int = 1): Flow<Resource<List<Category>>>
 
+    fun addToFav(prodId: Int): Flow<Resource<Boolean>>
+
+    fun removeFromFav(prodId: Int): Flow<Resource<Boolean>>
+
+    fun getFav(prodId: Int, page: Int): Flow<Resource<List<Product>>>
+
     fun getCategoryById(categoryId: Int): Flow<Resource<Category>>
 
     fun getProductById(): Flow<Resource<Product>>

@@ -5,6 +5,10 @@ import com.rs.data.model.entity.ProductEntity
 import com.rs.data.model.Data
 
 interface ProductsRemoteDs {
+    suspend fun getProduct(productId: Int) : Data<ProductEntity>
+    suspend fun addToFavorite(productId: Int) : Data<Boolean>
+    suspend fun removeFromFavorite(productId: Int) : Data<Boolean>
+    suspend fun getFavorites(page: Int) : Data<List<ProductEntity>>
     suspend fun getCategories(page: Int) : Data<List<CategoryEntity>>
     suspend fun getCategoryById(id: Int) : Data<CategoryEntity>
     suspend fun getProductsByCategory(categoryName: String, page: Int): Data<List<ProductEntity>>

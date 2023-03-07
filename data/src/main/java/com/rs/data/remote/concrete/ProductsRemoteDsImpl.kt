@@ -9,10 +9,39 @@ import com.rs.data.services.ProductsService
 
 internal class ProductsRemoteDsImpl(
     private val prodService: ProductsService,
-    private val apiConnection: ApiConnection
+    private val api: ApiConnection
 ) : ProductsRemoteDs {
+    override suspend fun getProduct(productId: Int): Data<ProductEntity> {
+        return api.call(prodService.getProductById(productId))
+    }
+
+    override suspend fun addToFavorite(productId: Int): Data<Boolean> {
+        val response = api.call(
+            prodService.addToFav(productId)
+        )
+
+        return Data.Success(response is Data.Success)
+    }
+
+    override suspend fun removeFromFavorite(productId: Int): Data<Boolean> {
+        val response = api.call(
+            prodService.removeFromFav(productId)
+        )
+
+        return Data.Success(response is Data.Success)
+    }
+
+    override suspend fun getFavorites(page: Int): Data<List<ProductEntity>> {
+        return when (
+            val response = api.call(prodService.getFavorites(page, PAGE_SIZE))
+        ) {
+            is Data.Success -> Data.Success(response.data?.result ?: emptyList())
+            is Data.Error -> Data.Error()
+        }
+    }
+
     override suspend fun getCategories(page: Int): Data<List<CategoryEntity>> {
-        return when (val response = apiConnection.call(
+        return when (val response = api.call(
             prodService.getCategories(page, pageSize = PAGE_SIZE)
         )) {
             is Data.Success -> Data.Success(response.data?.result ?: emptyList())
@@ -21,7 +50,7 @@ internal class ProductsRemoteDsImpl(
     }
 
     override suspend fun getCategoryById(id: Int): Data<CategoryEntity> {
-        return apiConnection.call(
+        return api.call(
             prodService.getCategoryById(id)
         )
     }
@@ -50,7 +79,7 @@ internal class ProductsRemoteDsImpl(
         maxPrice?.let { queryMap["unit_price_max"] = it.toString() }
         minPrice?.let { queryMap["unit_price_min"] = it.toString() }
 
-        return when (val response = apiConnection.call(
+        return when (val response = api.call(
             prodService.getProducts(queryMap.toMap())
         )) {
             is Data.Success -> Data.Success(response.data?.result ?: emptyList())

@@ -1,10 +1,16 @@
 package com.rs.blackmarket.domain.extensions
 
 import com.rs.blackmarket.domain.model.Category
+import com.rs.blackmarket.domain.model.Order
+import com.rs.blackmarket.domain.model.OrderProduct
 import com.rs.blackmarket.domain.model.Product
 import com.rs.blackmarket.domain.model.ProductStatus
+import com.rs.blackmarket.domain.model.ShoppingCart
 import com.rs.data.model.entity.CategoryEntity
+import com.rs.data.model.entity.OrderEntity
+import com.rs.data.model.entity.OrderResumeEntity
 import com.rs.data.model.entity.ProductEntity
+import com.rs.data.model.entity.ShoppingCartEntity
 
 fun Category.Companion.parse(entity: CategoryEntity): Category = Category(
     id = entity.id,
@@ -26,3 +32,30 @@ fun Product.Companion.parse(entity: ProductEntity): Product = Product(
     //TODO=
     status = ProductStatus.NEW
 )
+
+fun ShoppingCart.Companion.parse(entity: ShoppingCartEntity): ShoppingCart {
+    return ShoppingCart(
+        total = entity.totalPrice,
+        products = entity.orderProducts.map { OrderProduct.parse(it) }
+    )
+}
+
+fun OrderProduct.Companion.parse(entity: OrderResumeEntity): OrderProduct {
+    return OrderProduct(
+        Product.parse(entity.product),
+        quantity = entity.quantity,
+        totalPrice = entity.totalProductPrice,
+        unitPrice = entity.unitPrice
+    )
+}
+
+fun Order.Companion.parse(entity: OrderEntity): Order {
+    return Order(
+        id = entity.id,
+        paymentStatus = entity.paymentStatus,
+        date = entity.dateBought,
+        city = entity.addressCity,
+        address = "${entity.addressLine1}, ${entity.addressLine2}",
+        orderProducts = entity.orderProducts.map { OrderProduct.parse(it) }
+    )
+}
