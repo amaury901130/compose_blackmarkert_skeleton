@@ -1,8 +1,10 @@
 package com.rs.blackmarket.domain.repository
 
 import com.rs.blackmarket.domain.repository.concrete.AuthRepositoryImpl
+import com.rs.blackmarket.domain.repository.concrete.OrderRepositoryImpl
 import com.rs.blackmarket.domain.repository.concrete.ProductRepositoryImpl
 import com.rs.data.remote.AuthRemoteDs
+import com.rs.data.remote.CartRemoteDs
 import com.rs.data.remote.ProductsRemoteDs
 import dagger.Module
 import dagger.Provides
@@ -25,5 +27,11 @@ class RepositoryProviderModule {
     @Singleton
     fun provideProductRepository(prodRemoteDs: ProductsRemoteDs): ProductRepository {
         return ProductRepositoryImpl(prodRemoteDs);
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderRepository(cartRemoteDs: CartRemoteDs): OrderRepository {
+        return OrderRepositoryImpl(cartRemoteDs);
     }
 }
