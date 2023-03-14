@@ -24,6 +24,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -93,7 +94,7 @@ class DataProviderModule {
     @Provides
     @Singleton
     fun provideApiWrapper(tokenService: TokenService, pref: DataPreferences): ApiConnection {
-        return ApiConnectionImpl(tokenService, pref)
+        return ApiConnectionImpl(tokenService, pref, Dispatchers.IO)
     }
 
     @Provides

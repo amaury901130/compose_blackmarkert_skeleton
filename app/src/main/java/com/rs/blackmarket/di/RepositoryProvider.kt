@@ -1,5 +1,8 @@
-package com.rs.blackmarket.domain.repository
+package com.rs.blackmarket.di
 
+import com.rs.blackmarket.domain.repository.AuthRepository
+import com.rs.blackmarket.domain.repository.OrderRepository
+import com.rs.blackmarket.domain.repository.ProductRepository
 import com.rs.blackmarket.domain.repository.concrete.AuthRepositoryImpl
 import com.rs.blackmarket.domain.repository.concrete.OrderRepositoryImpl
 import com.rs.blackmarket.domain.repository.concrete.ProductRepositoryImpl

@@ -8,6 +8,7 @@ import com.rs.data.model.Data
 import com.rs.data.model.ResponseError
 import com.rs.data.model.requests.LogoutRequest
 import com.rs.data.services.TokenService
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -16,9 +17,10 @@ import java.lang.reflect.Type
 
 internal class ApiConnectionImpl(
     private val tokenService: TokenService,
-    private val pref: DataPreferences
+    private val pref: DataPreferences,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ApiConnection {
-    override suspend fun <T> call(apiCall: Call<T>): Data<T> = withContext(Dispatchers.IO) {
+    override suspend fun <T> call(apiCall: Call<T>): Data<T> = withContext(ioDispatcher) {
         try {
             val response = apiCall.execute()
             when {

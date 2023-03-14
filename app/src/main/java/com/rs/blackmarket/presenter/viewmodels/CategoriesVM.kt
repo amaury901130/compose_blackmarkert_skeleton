@@ -2,12 +2,12 @@ package com.rs.blackmarket.presenter.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rs.blackmarket.di.AppDispatchers
 import com.rs.blackmarket.domain.model.Category
 import com.rs.blackmarket.domain.model.Product
 import com.rs.blackmarket.domain.model.Resource
 import com.rs.blackmarket.domain.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,7 +15,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CategoriesVM @Inject constructor(private val productRepository: ProductRepository) :
+class CategoriesVM @Inject constructor(
+    private val productRepository: ProductRepository,
+    private val iODispatcher: AppDispatchers.IO
+) :
     ViewModel() {
 
     private var _page: Int = 1
@@ -31,7 +34,7 @@ class CategoriesVM @Inject constructor(private val productRepository: ProductRep
     val products = _products.asStateFlow()
 
     fun loadCategories() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(iODispatcher.thread) {
             productRepository.getCategories(_page++).collect {
                 _uiState.emit(it)
             }
@@ -39,7 +42,7 @@ class CategoriesVM @Inject constructor(private val productRepository: ProductRep
     }
 
     fun loadCategoryById(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(iODispatcher.thread) {
             productRepository.getCategoryById(id).collect {
                 _selectedCategory.emit(it)
             }
@@ -47,7 +50,8 @@ class CategoriesVM @Inject constructor(private val productRepository: ProductRep
     }
 
     fun loadProducts() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(iODispatcher.thread) {
+            //THIS is an example
             productRepository.getProductsByCategory("Routers", _productPageByCategory++).collect {
                 _products.emit(it)
             }
