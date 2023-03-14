@@ -7,6 +7,7 @@ import com.rs.blackmarket.domain.model.ShoppingCartItem
 import com.rs.blackmarket.domain.model.Product
 import com.rs.blackmarket.domain.model.ProductStatus
 import com.rs.blackmarket.domain.model.ShoppingCart
+import com.rs.blackmarket.domain.model.fromValue
 import com.rs.data.model.entity.CategoryEntity
 import com.rs.data.model.entity.OrderEntity
 import com.rs.data.model.entity.OrderProductEntity
@@ -31,8 +32,7 @@ fun Product.Companion.parse(entity: ProductEntity): Product = Product(
     price = entity.unitPrice?.toDouble() ?: 0.0,
     totalItems = entity.numAvailableItems,
     categories = entity.categories.map { cat -> Category.parse(cat) },
-    //TODO=
-    status = ProductStatus.NEW
+    status = ProductStatus.fromValue(entity.state)
 )
 
 fun ShoppingCart.Companion.parse(entity: ShoppingCartEntity?): ShoppingCart {

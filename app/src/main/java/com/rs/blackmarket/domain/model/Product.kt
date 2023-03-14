@@ -10,11 +10,16 @@ data class Product(
     val isFav: Boolean = false,
     val totalItems: Int,
     val categories: List<Category>,
-    val status: ProductStatus
+    val status: ProductStatus? = ProductStatus.USED
 ) {
     companion object
 }
 
 enum class ProductStatus(val queryValue: String) {
-    NEW("N"), USED("U"), SEMI_NEW("A")
+    NEW("N"), USED("U"), LIKE_NEW("A");
+
+    companion object
 }
+
+fun ProductStatus.Companion.fromValue(value: String? = "A") =
+    ProductStatus.values().find { it.queryValue == value } ?: ProductStatus.LIKE_NEW
