@@ -2,7 +2,7 @@ package com.rs.blackmarket.domain.model
 
 data class Order(
     val id: Int,
-    val orderProducts: List<OrderProduct>,
+    val orderProducts: List<ShoppingCartItem>,
     val paymentStatus: String,
     val date: String?,
     val city: String,

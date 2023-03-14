@@ -1,6 +1,6 @@
 package com.rs.blackmarket.domain.repository
 
-import com.rs.blackmarket.domain.model.OrderProduct
+import com.rs.blackmarket.domain.model.OrderItem
 import com.rs.blackmarket.domain.model.Product
 import com.rs.blackmarket.domain.model.Resource
 import com.rs.blackmarket.domain.model.ShoppingCart
@@ -29,5 +29,5 @@ interface OrderRepository {
 
     suspend fun getOrders(page: Int): Flow<Resource<List<Any>>>
 
-    suspend fun getOrdersProducts(page: Int): Flow<Resource<List<Product>>>
+    suspend fun getOrdersProducts(page: Int): Flow<Resource<List<OrderItem>>>
 }

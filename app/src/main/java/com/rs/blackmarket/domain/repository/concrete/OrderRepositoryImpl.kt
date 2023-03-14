@@ -2,8 +2,7 @@ package com.rs.blackmarket.domain.repository.concrete
 
 import com.rs.blackmarket.domain.extensions.parse
 import com.rs.blackmarket.domain.model.Order
-import com.rs.blackmarket.domain.model.OrderProduct
-import com.rs.blackmarket.domain.model.Product
+import com.rs.blackmarket.domain.model.OrderItem
 import com.rs.blackmarket.domain.model.Resource
 import com.rs.blackmarket.domain.model.ShoppingCart
 import com.rs.blackmarket.domain.repository.OrderRepository
@@ -80,13 +79,7 @@ class OrderRepositoryImpl(private val cartRemoteDs: CartRemoteDs) : OrderReposit
     override suspend fun getShoppingCart(): Flow<Resource<ShoppingCart>> = flow {
         emit(Resource.Loading())
         when (val response = cartRemoteDs.getShoppingCart()) {
-            is Data.Success -> {
-                response.data?.let {
-                    emit(Resource.Success(ShoppingCart.parse(it)))
-                } ?: run {
-                    emit(Resource.Idle())
-                }
-            }
+            is Data.Success -> emit(Resource.Success(ShoppingCart.parse(response.data)))
             is Data.Error -> emit(Resource.Error())
         }
     }
@@ -95,20 +88,19 @@ class OrderRepositoryImpl(private val cartRemoteDs: CartRemoteDs) : OrderReposit
         emit(Resource.Loading())
         when (val response = cartRemoteDs.getOrders(page)) {
             is Data.Success -> {
-                response.data?.let {
-                    emit(Resource.Success(
-                        it.map { order -> Order.parse(order) }
-                    ))
-                } ?: run {
-                    emit(Resource.Idle())
-                }
+                emit(Resource.Success(response.data?.map { Order.parse(it) } ?: emptyList()))
             }
             is Data.Error -> emit(Resource.Error())
         }
     }
 
-    override suspend fun getOrdersProducts(page: Int): Flow<Resource<List<Product>>> = flow {
+    override suspend fun getOrdersProducts(page: Int): Flow<Resource<List<OrderItem>>> = flow {
         emit(Resource.Loading())
-        //TODO:...
+        when (val response = cartRemoteDs.getOrdersProducts(page)) {
+            is Data.Success -> {
+                emit(Resource.Success(response.data?.map { OrderItem.parse(it) } ?: emptyList()))
+            }
+            is Data.Error -> emit(Resource.Error())
+        }
     }
 }
