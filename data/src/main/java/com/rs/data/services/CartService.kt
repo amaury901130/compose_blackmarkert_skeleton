@@ -6,8 +6,10 @@ import com.rs.data.model.entity.ShoppingCartEntity
 import com.rs.data.model.responses.GetOrderProductsResponse
 import com.rs.data.model.responses.GetOrdersResponse
 import com.rs.data.model.entity.PurchaseEntity
+import com.rs.data.model.requests.RemoveItemRequest
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -20,6 +22,9 @@ interface CartService {
      */
     @POST("{$SHOPPING_CART_PREFIX}/add_product_to_cart/")
     fun addToShoppingCart(@Body body: AddShoppingCartRequest): Call<ShoppingCartEntity>
+
+    @DELETE("{$SHOPPING_CART_PREFIX}/remove_product_from_cart/")
+    fun removeProduct(@Body body: RemoveItemRequest): Call<ShoppingCartEntity>
 
     @PUT("{$SHOPPING_CART_PREFIX}/complete_purchase/")
     fun completePurchase(@Body body: PurchaseInfoRequest): Call<PurchaseEntity>

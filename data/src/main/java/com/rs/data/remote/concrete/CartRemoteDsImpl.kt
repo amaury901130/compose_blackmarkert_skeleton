@@ -7,6 +7,7 @@ import com.rs.data.model.entity.OrderProductEntity
 import com.rs.data.model.entity.ShoppingCartEntity
 import com.rs.data.model.requests.AddShoppingCartRequest
 import com.rs.data.model.requests.PurchaseInfoRequest
+import com.rs.data.model.requests.RemoveItemRequest
 import com.rs.data.remote.CartRemoteDs
 import com.rs.data.services.CartService
 
@@ -26,9 +27,13 @@ internal class CartRemoteDsImpl(
         return Data.Success(response is Data.Success)
     }
 
-    //TODO: waiting for BE implementation
     override suspend fun removeProduct(productId: Int): Data<Boolean> {
-        return Data.Success(true)
+        return when (
+            val response = api.call(cartService.removeProduct(RemoveItemRequest(productId)))
+        ) {
+            is Data.Success -> Data.Success(true)
+            is Data.Error -> Data.Error(errorMessages = response.errorMessages)
+        }
     }
 
     override suspend fun completePurchase(
